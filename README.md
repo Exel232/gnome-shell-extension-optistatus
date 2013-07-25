@@ -4,6 +4,7 @@ An icon that displays the current status of your optimus card.
 
 ## Features
    * Shows if bbswitch is turned on or off
+
 ## Roadmap
    * Accessible preferences instead of hardcoded config (interval, polling on/off, notifications)
    * List of processes using optirun
