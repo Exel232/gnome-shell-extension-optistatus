@@ -39,7 +39,6 @@ const Optistatus = new Lang.Class({
 	},
 	
 	destroy: function() {
-		this.parent()
 		running = false;
 	}
 });
