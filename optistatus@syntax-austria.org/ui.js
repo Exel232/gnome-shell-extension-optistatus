@@ -13,20 +13,17 @@ const OptistatusIndicator = new Lang.Class( {
 	Extends: PanelMenu.Button,
 
 	_init: function() {
-		this.parent(null, this.IndicatorName);
+		this.parent(null, indicator_name);
 		this.icon = new St.Icon({
 			icon_name: inactive_icon,
 			style_class: "system-status-icon"
 		});
 		this.actor.add_child(this.icon);
-		this.statusChecker = new Lib.Optistatus();
-		this.statusChecker.connect("optimus-start", this._enable_icon.bind(this));
-		this.statusChecker.connect("optimus-stop", this._disable_icon.bind(this));
 	},
-	_enable_icon: function() {
+	enable: function() {
 		this.icon.icon_name = active_icon;
 	},
-	_disable_icon: function() {
+	disable: function() {
 		this.icon.icon_name = inactive_icon;
 	},
 	getName: function() {
@@ -34,6 +31,5 @@ const OptistatusIndicator = new Lang.Class( {
 	},
 	destroy: function() {
 		this.parent();
-		this.statusChecker.destroy();
 	}
 });

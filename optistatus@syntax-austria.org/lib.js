@@ -4,8 +4,8 @@ const GLib = imports.gi.GLib;
 
 const bbswitch_file = "/proc/acpi/bbswitch";
 
-const Optistatus = new Lang.Class({
-	Name: "Optistatus",
+const Status = new Lang.Class({
+	Name: "Status",
 
 	_init: function() {
 		this.parent()
@@ -22,19 +22,15 @@ const Optistatus = new Lang.Class({
 		if(newEnabled != this.enabled) {
 			this.enabled = newEnabled;
 			if(this.enabled == true)
-				this.emit("optimus-start");
+				this.emit("enable");
 			else
-				this.emit("optimus-stop");
+				this.emit("disable");
 		}
 		GLib.timeout_add_seconds(0, 3, this._loop.bind(this));
 	},
 
 	_is_enabled: function() {
 		let fileContents = GLib.file_get_contents(bbswitch_file);
-		if(!fileContents[0]) {//If file could not be opened, optimus is not correctly installed;
-			this.emit("no-optimus");
-			return false;
-		}
 		return fileContents[1].toString().indexOf("ON") != -1;
 	},
 	
@@ -43,4 +39,4 @@ const Optistatus = new Lang.Class({
 	}
 });
 
-Signals.addSignalMethods(Optistatus.prototype);
+Signals.addSignalMethods(Status.prototype);
