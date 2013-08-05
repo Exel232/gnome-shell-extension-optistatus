@@ -1,33 +1,38 @@
 const Lang = imports.lang;
 const St = imports.gi.St;
-const PanelMenu = imports.ui.panelMenu;
+const Ui = imports.ui;
 const Optistatus = imports.misc.extensionUtils.getCurrentExtension();
 const Lib = Optistatus.imports.lib;
 
 const active_icon = "optistatus-active-symbolic";
 const inactive_icon = "optistatus-inactive-symbolic";
-const indicator_name = "Optistatus";
+const indicator_name = "optistatus";
 
 const OptistatusIndicator = new Lang.Class( {
 	Name: "OptistatusIndicator",
-	Extends: PanelMenu.Button,
+	Extends: Ui.panelMenu.SystemStatusButton,
 
 	_init: function() {
-		this.parent(null, indicator_name);
-		this.icon = new St.Icon({
-			icon_name: inactive_icon,
-			style_class: "system-status-icon"
-		});
-		this.actor.add_child(this.icon);
+		this.parent(inactive_icon);
 	},
 	enable: function() {
-		this.icon.icon_name = active_icon;
+		this.setIcon(active_icon);
 	},
 	disable: function() {
-		this.icon.icon_name = inactive_icon;
+		this.setIcon(inactive_icon);
 	},
 	getName: function() {
 		return indicator_name;
+	},
+	updateMenu: function(items) {
+		let indicator = this;
+		indicator.menu.removeAll();
+		items.forEach(function(item) {
+			let cmdline = item.cmdline.split("\0");
+			let menuItem = new Ui.popupMenu.PopupMenuItem(cmdline[1]);
+			menuItem.connect("activate", Lang.bind(item, item.kill));
+			indicator.menu.addMenuItem(menuItem);
+		});
 	},
 	destroy: function() {
 		this.parent();
