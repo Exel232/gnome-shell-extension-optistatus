@@ -14,6 +14,7 @@ const OptistatusIndicator = new Lang.Class( {
 
 	_init: function() {
 		this.parent(inactive_icon);
+		this.updateMenu([]);
 	},
 	enable: function() {
 		this.setIcon(active_icon);
@@ -27,6 +28,11 @@ const OptistatusIndicator = new Lang.Class( {
 	updateMenu: function(items) {
 		let indicator = this;
 		indicator.menu.removeAll();
+		if(items.length == 0) {
+			let menu_item = new Ui.popupMenu.PopupMenuItem("No running Processes");
+			menu_item.setSensitive(false);
+			this.menu.addMenuItem(menu_item);
+		}
 		items.forEach(function(item) {
 			let cmdline = item.cmdline.split("\0");
 			let menuItem = new Ui.popupMenu.PopupMenuItem(cmdline[1]);
