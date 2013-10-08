@@ -10,11 +10,21 @@ const indicator_name = "optistatus";
 
 const OptistatusIndicator = new Lang.Class( {
 	Name: "OptistatusIndicator",
-	Extends: Ui.panelMenu.SystemStatusButton,
+	Extends: Ui.panelMenu.Button,
 
 	_init: function() {
-		this.parent(inactive_icon);
+		this.parent(0.0);
 		this.updateMenu([]);
+		this.icon = null;
+	},
+	setIcon: function(name) {
+		if(this.icon != null)
+			this.icon.destroy();
+		this.icon = new St.Icon({
+			icon_name: name,
+			style_class: "system-status-icon"
+		});
+		this.actor.add_actor(this.icon);
 	},
 	enable: function() {
 		this.setIcon(active_icon);
