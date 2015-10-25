@@ -17,22 +17,22 @@ function init(extensionMeta) {
 function enable() {
 	indicator = new ui.OptistatusIndicator();
 	status = new lib.Status();
-	proclist = new process.ProcessList();
+//	proclist = new process.ProcessList();
 	interval = new lib.Interval(update, 3000);
 
 	status.connect("enable", indicator.enable.bind(indicator));
 	status.connect("disable", indicator.disable.bind(indicator));
-	proclist.connect("updated", function() {
-		indicator.updateMenu(proclist.processes);
-	});
+//	proclist.connect("updated", function() {
+//		indicator.updateMenu(proclist.processes);
+//	});
 	if(status.is_enabled())
 		indicator.enable();
 	else
 		indicator.disable();
 
-	proclist.add_filter(function(process) {
-		return process.command.indexOf("optirun") != -1;
-	});
+//	proclist.add_filter(function(process) {
+//		return process.command.indexOf("optirun") != -1;
+//	});
 	
 	Main.panel.addToStatusArea(indicator.getName(), indicator);
 	interval.start();
@@ -40,7 +40,7 @@ function enable() {
 
 function update() {
 	status.update();
-	proclist.update();
+//	proclist.update();
 }
 
 function disable() {
